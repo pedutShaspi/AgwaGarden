@@ -1,5 +1,6 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from "react";
+import PlantCircleImage from '../components/PlantCircleImage';
 
 export default function HomePage({ navigation }) {
   return (
@@ -16,7 +17,6 @@ export default function HomePage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
