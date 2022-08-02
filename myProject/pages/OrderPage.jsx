@@ -1,11 +1,14 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, Image } from 'react-native';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import PlantsList from '../components/PlantsList';
+import { MONTH_OF_THE_YEAR } from '../consts/MonthOfTheYear'
+import { useOrderedPlantsContext } from '../contexts/OrderedPlantsContext';
 
 export default function OrderPage({ navigation }) {
   const [allPlants, setAllPlants] = useState([])
-  const [orderedPlants, setOrderedPlants] = useState([])
+  const { orderedPlants, setOrderedPlants } = useOrderedPlantsContext()
+  console.log('orderedPlants: ', orderedPlants);
   const currentDate = new Date()
 
   useEffect(() => getCategories(), [])
@@ -16,14 +19,13 @@ export default function OrderPage({ navigation }) {
   }
 
   const addPlantToOrder = (plantId, categoryName) => {
-    let selectedPlant;
 
     setAllPlants((categories) => {
-      categories.map((prevCategory) => {
+      return categories.map((prevCategory) => {
         if (prevCategory.name === categoryName) {
           prevCategory.plants.map((plantInfo) => {
             if (plantInfo.id === plantId) {
-              selectedPlant = { ...plantInfo }
+              setOrderedPlants([...orderedPlants, {...plantInfo}])
               plantInfo.selected = true
             }
             return plantInfo
@@ -32,14 +34,12 @@ export default function OrderPage({ navigation }) {
         return prevCategory
       })
     })
-
-    setOrderedPlants((prevPlants) => [...prevPlants, selectedPlant])
   }
 
   const removePlantToOrder = (plantId, categoryName) => {
 
     setAllPlants((categories) => {
-      categories.map((prevCategory) => {
+      return categories.map((prevCategory) => {
         prevCategory.plants.map((plantInfo) => {
           if (plantInfo.id === plantId) {
             plantInfo.selected = false
@@ -50,27 +50,31 @@ export default function OrderPage({ navigation }) {
       })
     })
 
-    setOrderedPlants((prevPlants) => prevPlants.filter((plantInfo)=>{
+    setOrderedPlants((prevPlants) => prevPlants.filter((plantInfo) => {
       return plantInfo.id !== plantId
     }))
   }
 
   return (
     <View style={styles.container}>
+      <Image source={require("../assets/agwaIcon.png")} />
+
       <Text>Your next order</Text>
       <Text>The monthly plants order consists {orderedPlants.length} plants.</Text>
       <Text>
-        Changes to your next order can be made until the end of {currentDate.getMonth()}.
-        This order will be shipped on the beginning of {currentDate.getMonth() + 1}.
+        Changes to your next order can be made until the end of {MONTH_OF_THE_YEAR[currentDate.getMonth()]}.
+        This order will be shipped on the beginning of {MONTH_OF_THE_YEAR[(currentDate.getMonth() + 1) % 12]}.
       </Text>
-      <PlantsList plantsListInfo={orderedPlants} title={'Your selected plants'} addPlantOrRemove={removePlantToOrder} />
+      <PlantsList plantsListInfo={orderedPlants} key={0} title={'Your selected plants'} addPlantOrRemove={removePlantToOrder} />
       {allPlants.map((categoryInfo) => (
         <PlantsList key={categoryInfo.id} plantsListInfo={categoryInfo.plants} addPlantOrRemove={addPlantToOrder} title={categoryInfo.name} />
       ))}
 
       <Button
         title="save changes"
-        onPress={() => console.log('mkmk nkjjn')}
+        color='#5cb354'
+        disabled={orderedPlants.length !== 5}
+        onPress={() => navigation.navigate('Home', { showOrderMessage: true })}
       />
     </View>
   );
@@ -81,4 +85,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  saveButton: {
+    backgroundColor: '#5cb354'
+  }
+
 });

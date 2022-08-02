@@ -16,7 +16,7 @@ export default function PlantsList({ plantsListInfo, title, addPlantOrRemove }) 
             </Text>
             <ScrollView style={styles.scrollContainer} horizontal={true}>
                 {plantsListInfo.map((plantInfo) => (
-                    plantInfo.selected ? <></> :
+                    plantInfo?.selected ? <></> :
                     <PlantCircleImage key={plantInfo.id} imageId={plantInfo.id} addPlantOrRemove={changeOrder} plantName={plantInfo.name} />
                 ))}
             </ScrollView>

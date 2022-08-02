@@ -9,7 +9,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-Notifications.icon = './assets/notification-icon.png'
+Notifications.icon = '../assets/notification-icon.png'
 
 async function schedulePushNotification() {
   const time = new Date(Date.now())
@@ -20,7 +20,7 @@ async function schedulePushNotification() {
     content: {
       title: "Your monthly order",
       body: 'Please select the plants for your next shipment',
-      sound: './assets/notification-sound.mp3',
+      sound: '../assets/notification-sound.mp3',
     },
     trigger,
   });

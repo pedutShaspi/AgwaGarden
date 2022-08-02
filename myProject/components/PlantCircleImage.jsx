@@ -4,7 +4,7 @@ import { vw, vh } from "react-native-expo-viewport-units";
 
 export default function PlantCircleImage({ imageId, plantName, addPlantOrRemove }) {
     const imageRemoteUri = `https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/images/vegetables/${imageId}@3x.jpg`
-    
+
     return (
         <TouchableOpacity
             activeOpacity={1}

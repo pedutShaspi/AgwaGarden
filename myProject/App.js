@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import schedulePushNotification from './notifications/Notifications';
+import { OrderedPlantsProvider } from './contexts/OrderedPlantsContext';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -13,13 +14,16 @@ export default function App() {
   useEffect(schedulePushNotification,[])
 
   return (
-    <NavigationContainer>
-      {/* Rest of your app code */}
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomePage} />
-        <Stack.Screen name="Order" component={OrderPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <OrderedPlantsProvider >
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home">
+              {(props) => <HomePage {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Order" component={OrderPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </OrderedPlantsProvider>
   );
 }
 
