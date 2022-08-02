@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        // width: 'fit-content'
+        maxHeight: 1.1 * vh(10)
+        // height: 'fit-content'
 
     },
     circleImage: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     },
     iconStyle: {
         position: 'absolute',
-        top: 0.15 * vh(10),
+        top: 0.05 * vh(10),
         right: 0.65 * vh(10),
         zIndex: 2
     }

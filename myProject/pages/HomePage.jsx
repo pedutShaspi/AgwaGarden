@@ -11,7 +11,7 @@ export default function HomePage({ route, navigation }) {
   useEffect(() => {
     if (route.params && route.params?.showOrderMessage) {
       setShowOrderMessage(route.params?.showOrderMessage)
-      setTimeout(() => setShowOrderMessage(false), 2000)
+      setTimeout(() => setShowOrderMessage(false), 10000)
     }
   }, [route.params])
 
@@ -25,8 +25,7 @@ export default function HomePage({ route, navigation }) {
         color='#5cb354'
         onPress={() => navigation.navigate('Order')}
       />
-      
-      {showOrderMessage && <PlantsList plantsListInfo={orderedPlants} title={'Your last order'} addPlantOrRemove={() => { }} />}
+        {showOrderMessage && <PlantsList plantsListInfo={orderedPlants} title={'Your last order'} addPlantOrRemove={() => { }} />}
 
     </View>
   );
@@ -39,4 +38,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white'
   },
+
 });
