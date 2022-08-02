@@ -4,28 +4,37 @@ import axios from 'axios';
 import PlantsList from '../components/PlantsList';
 import { MONTH_OF_THE_YEAR } from '../consts/MonthOfTheYear'
 import { useOrderedPlantsContext } from '../contexts/OrderedPlantsContext';
+import { vw, vh } from "react-native-expo-viewport-units";
 
 export default function OrderPage({ navigation }) {
   const [allPlants, setAllPlants] = useState([])
+  console.log('allPlants: ', allPlants);
   const { orderedPlants, setOrderedPlants } = useOrderedPlantsContext()
-  console.log('orderedPlants: ', orderedPlants);
+  const [selectedPlants, setSelectedPlants] = useState(orderedPlants)
   const currentDate = new Date()
 
   useEffect(() => getCategories(), [])
 
   const getCategories = async () => {
     const { data } = await axios.get('https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json')
-    setAllPlants(data.categories)
+    setAllPlants(data.categories.map((prevCategory) => {
+      prevCategory.plants.map((plantInfo) => {
+        if(selectedPlants.filter((selectPlant)=>selectPlant.id === plantInfo.id).length)
+          plantInfo.selected = true
+        return plantInfo
+      })
+      return prevCategory
+    }))
   }
 
   const addPlantToOrder = (plantId, categoryName) => {
-
+    let selectedPlantInfo;
     setAllPlants((categories) => {
       return categories.map((prevCategory) => {
         if (prevCategory.name === categoryName) {
           prevCategory.plants.map((plantInfo) => {
             if (plantInfo.id === plantId) {
-              setOrderedPlants([...orderedPlants, {...plantInfo}])
+              selectedPlantInfo = { ...plantInfo }
               plantInfo.selected = true
             }
             return plantInfo
@@ -34,6 +43,7 @@ export default function OrderPage({ navigation }) {
         return prevCategory
       })
     })
+    setSelectedPlants((prevSelectedPlants) => [...prevSelectedPlants, selectedPlantInfo])
   }
 
   const removePlantToOrder = (plantId, categoryName) => {
@@ -50,31 +60,36 @@ export default function OrderPage({ navigation }) {
       })
     })
 
-    setOrderedPlants((prevPlants) => prevPlants.filter((plantInfo) => {
+    setSelectedPlants((prevPlants) => prevPlants.filter((plantInfo) => {
       return plantInfo.id !== plantId
     }))
   }
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/agwaIcon.png")} />
+      <Image style={styles.logoStyle} source={require("../assets/agwaIcon.png")} />
 
       <Text>Your next order</Text>
-      <Text>The monthly plants order consists {orderedPlants.length} plants.</Text>
+      <Text>The monthly plants order consists {selectedPlants.length} plants.</Text>
       <Text>
         Changes to your next order can be made until the end of {MONTH_OF_THE_YEAR[currentDate.getMonth()]}.
         This order will be shipped on the beginning of {MONTH_OF_THE_YEAR[(currentDate.getMonth() + 1) % 12]}.
       </Text>
-      <PlantsList plantsListInfo={orderedPlants} key={0} title={'Your selected plants'} addPlantOrRemove={removePlantToOrder} />
+      <PlantsList plantsListInfo={selectedPlants} changeIcon={"delete"} key={0} title={'Your selected plants'} addPlantOrRemove={removePlantToOrder} />
       {allPlants.map((categoryInfo) => (
-        <PlantsList key={categoryInfo.id} plantsListInfo={categoryInfo.plants} addPlantOrRemove={addPlantToOrder} title={categoryInfo.name} />
+        <PlantsList key={categoryInfo.id} changeIcon={"plus"} plantsListInfo={categoryInfo.plants} addPlantOrRemove={addPlantToOrder} title={categoryInfo.name} />
       ))}
 
       <Button
         title="save changes"
         color='#5cb354'
-        disabled={orderedPlants.length !== 5}
-        onPress={() => navigation.navigate('Home', { showOrderMessage: true })}
+        disabled={selectedPlants.length !== 5}
+
+        onPress={() => {
+          setOrderedPlants(selectedPlants)
+          navigation.navigate('Home', { showOrderMessage: true })
+        }
+        }
       />
     </View>
   );
@@ -83,10 +98,13 @@ export default function OrderPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white'
   },
   saveButton: {
     backgroundColor: '#5cb354'
+  },
+  logoStyle: {
+    height: 0.1 * vh(100)
   }
 
 });

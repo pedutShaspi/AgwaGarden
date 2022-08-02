@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { vw, vh } from "react-native-expo-viewport-units";
 import PlantCircleImage from './PlantCircleImage';
 
-export default function PlantsList({ plantsListInfo, title, addPlantOrRemove }) {
+export default function PlantsList({ plantsListInfo, title, addPlantOrRemove, changeIcon }) {
 
     const changeOrder = (plantId) => {
         addPlantOrRemove(plantId, title)
@@ -17,7 +17,7 @@ export default function PlantsList({ plantsListInfo, title, addPlantOrRemove }) 
             <ScrollView style={styles.scrollContainer} horizontal={true}>
                 {plantsListInfo.map((plantInfo) => (
                     plantInfo?.selected ? <></> :
-                    <PlantCircleImage key={plantInfo.id} imageId={plantInfo.id} addPlantOrRemove={changeOrder} plantName={plantInfo.name} />
+                    <PlantCircleImage key={plantInfo.id} changeIcon={changeIcon} imageId={plantInfo.id} addPlantOrRemove={changeOrder} plantName={plantInfo.name} />
                 ))}
             </ScrollView>
         </View>

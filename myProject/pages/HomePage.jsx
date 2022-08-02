@@ -5,12 +5,13 @@ import PlantsList from '../components/PlantsList';
 import { useOrderedPlantsContext } from '../contexts/OrderedPlantsContext';
 
 export default function HomePage({ route, navigation }) {
-  const {orderedPlants} = useOrderedPlantsContext()
+  const { orderedPlants } = useOrderedPlantsContext()
   const [showOrderMessage, setShowOrderMessage] = useState(false)
 
   useEffect(() => {
     if (route.params && route.params?.showOrderMessage) {
       setShowOrderMessage(route.params?.showOrderMessage)
+      setTimeout(() => setShowOrderMessage(false), 2000)
     }
   }, [route.params])
 
@@ -19,13 +20,14 @@ export default function HomePage({ route, navigation }) {
 
       <Image source={require("../assets/agwaIcon.png")} />
 
-      <PlantsList plantsListInfo={orderedPlants} title={'Your last order'} addPlantOrRemove={() => { }} />
-
       <Button
         title="To order click here"
         color='#5cb354'
         onPress={() => navigation.navigate('Order')}
       />
+      
+      {showOrderMessage && <PlantsList plantsListInfo={orderedPlants} title={'Your last order'} addPlantOrRemove={() => { }} />}
+
     </View>
   );
 }
@@ -35,5 +37,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white'
   },
 });
