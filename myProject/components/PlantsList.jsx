@@ -1,7 +1,7 @@
-import { Button, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import React, { useState } from "react";
-import { vw, vh } from "react-native-expo-viewport-units";
+import { Text, View, ScrollView } from 'react-native';
+import React from "react";
 import PlantCircleImage from './PlantCircleImage';
+import stylesPlantsList from '../style/PlantsListStyle'
 
 export default function PlantsList({ plantsListInfo, title, addPlantOrRemove, changeIcon }) {
 
@@ -24,14 +24,4 @@ export default function PlantsList({ plantsListInfo, title, addPlantOrRemove, ch
     );
 }
 
-const stylesPlantsList = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    scrollContainer: {
-        height: 0.2 * vh(100),
-    },
-    title: {
-        marginLeft: 0.1 * vh(10),
-    }
-});
+

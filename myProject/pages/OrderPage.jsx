@@ -1,10 +1,11 @@
-import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import { Button, Text, View, Image } from 'react-native';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import PlantsList from '../components/PlantsList';
 import { MONTH_OF_THE_YEAR } from '../consts/MonthOfTheYear'
 import { useOrderedPlantsContext } from '../contexts/OrderedPlantsContext';
-import { vw, vh } from "react-native-expo-viewport-units";
+import {  vh } from "react-native-expo-viewport-units";
+import stylesOrderPage from '../style/OrderPageStyle'
 
 export default function OrderPage({ navigation }) {
   const [allPlants, setAllPlants] = useState([])
@@ -66,12 +67,12 @@ export default function OrderPage({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.logoStyle} source={require("../assets/agwaIcon.png")} />
+    <View style={stylesOrderPage.container}>
+      <Image style={stylesOrderPage.logoStyle} source={require("../assets/agwaIcon.png")} />
 
-      <Text style={styles.orderTextExplanation}>Your next order</Text>
-      <Text style={styles.orderTextExplanation}>The monthly plants order consists of {selectedPlants.length} plants.</Text>
-      <Text style={{ ...styles.orderTextExplanation, marginBottom: 0.1 * vh(10) }}>
+      <Text style={stylesOrderPage.orderTextExplanation}>Your next order</Text>
+      <Text style={stylesOrderPage.orderTextExplanation}>The monthly plants order consists of {selectedPlants.length} plants.</Text>
+      <Text style={{ ...stylesOrderPage.orderTextExplanation, marginBottom: 0.1 * vh(10) }}>
         Changes to your next order can be made until the end of {MONTH_OF_THE_YEAR[currentDate.getMonth()]}.
         This order will be shipped on the beginning of {MONTH_OF_THE_YEAR[(currentDate.getMonth() + 1) % 12]}.
       </Text>
@@ -95,20 +96,4 @@ export default function OrderPage({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  },
-  saveButton: {
-    backgroundColor: '#5cb354'
-  },
-  logoStyle: {
-    // width: vw(100),
-    height: 0.15 * vh(100),
-  },
-  orderTextExplanation: {
-    marginLeft: 0.1 * vh(10),
-    fontWeight: 'bold'
-  }
-});
+

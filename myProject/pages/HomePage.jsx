@@ -1,8 +1,8 @@
-import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import { Button, View, Image } from 'react-native';
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
 import PlantsList from '../components/PlantsList';
 import { useOrderedPlantsContext } from '../contexts/OrderedPlantsContext';
+import stylesHomePage from '../style/HonePageStyle';
 
 export default function HomePage({ route, navigation }) {
   const { orderedPlants } = useOrderedPlantsContext()
@@ -16,7 +16,7 @@ export default function HomePage({ route, navigation }) {
   }, [route.params])
 
   return (
-    <View style={styles.container}>
+    <View style={stylesHomePage.container}>
 
       <Image source={require("../assets/agwaIcon.png")} />
 
@@ -31,12 +31,4 @@ export default function HomePage({ route, navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
-  },
 
-});
