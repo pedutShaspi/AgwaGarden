@@ -19,7 +19,7 @@ export default function OrderPage({ navigation }) {
     const { data } = await axios.get('https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json')
     setAllPlants(data.categories.map((prevCategory) => {
       prevCategory.plants.map((plantInfo) => {
-        if(selectedPlants.filter((selectPlant)=>selectPlant.id === plantInfo.id).length)
+        if (selectedPlants.filter((selectPlant) => selectPlant.id === plantInfo.id).length)
           plantInfo.selected = true
         return plantInfo
       })
@@ -69,9 +69,9 @@ export default function OrderPage({ navigation }) {
     <View style={styles.container}>
       <Image style={styles.logoStyle} source={require("../assets/agwaIcon.png")} />
 
-      <Text>Your next order</Text>
-      <Text>The monthly plants order consists {selectedPlants.length} plants.</Text>
-      <Text>
+      <Text style={styles.orderTextExplanation}>Your next order</Text>
+      <Text style={styles.orderTextExplanation}>The monthly plants order consists of {selectedPlants.length} plants.</Text>
+      <Text style={{ ...styles.orderTextExplanation, marginBottom: 0.1 * vh(10) }}>
         Changes to your next order can be made until the end of {MONTH_OF_THE_YEAR[currentDate.getMonth()]}.
         This order will be shipped on the beginning of {MONTH_OF_THE_YEAR[(currentDate.getMonth() + 1) % 12]}.
       </Text>
@@ -104,7 +104,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#5cb354'
   },
   logoStyle: {
-    height: 0.1 * vh(100)
+    // width: vw(100),
+    height: 0.15 * vh(100),
+  },
+  orderTextExplanation: {
+    marginLeft: 0.1 * vh(10),
+    fontWeight: 'bold'
   }
-
 });
