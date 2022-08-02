@@ -1,17 +1,14 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from "react";
-import PlantCircleImage from '../components/PlantCircleImage';
-import NotificationsPage from '../notifications/Notifications';
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 
 export default function HomePage({ navigation }) {
   const [orderedPlants, setOrderedPlants] = useState([])
 
   return (
     <View style={styles.container}>
-      <Text>home page</Text>
-      <PlantCircleImage imageId='basil_geronimo' plantName='basil_geronimo' />
       <Button
-        title="Go to Order"
+        title="To order click here"
         onPress={() => navigation.navigate('Order')}
       />
     </View>
